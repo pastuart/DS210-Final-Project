@@ -9,7 +9,7 @@ fn main() {
     //let mut france_data = test_data.get_country_data("France"); 
     //france_data.unwrap().print();
 
-    let mut year_data = test_data.get_year_data(1987);
+    let mut year_data = test_data.get_year_data(2021);
     year_data.unwrap().print();
 
     //let mut basketball_data = DataFrame::new(5, 6);

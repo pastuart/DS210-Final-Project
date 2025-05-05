@@ -63,7 +63,6 @@ impl DataFrame {
                 continue;
             }
             for (i, elem) in r.iter().enumerate() {
-                println!("{:?}", elem);
                 match types[i] {
                     1 => row.push(ColumnVal::One(elem.to_string())),
                     2 => row.push(ColumnVal::Two(elem.parse::<bool>().unwrap())),
@@ -87,10 +86,10 @@ impl DataFrame {
         for row in &self.columns {
             for val in &self.columns[i] {
                 match val {
-                    ColumnVal::One(a) => print!("{:<2?}    ", a),
-                    ColumnVal::Two(b) => print!("{:<2?}    ", b),
-                    ColumnVal::Three(c) => print!("{:<2?}    ", c),
-                    ColumnVal::Four(d) =>  print!("{:<2?}    ", d),
+                    ColumnVal::One(a) => print!("{},", a),
+                    ColumnVal::Two(b) => print!("{},", b),
+                    ColumnVal::Three(c) => print!("{},", c),
+                    ColumnVal::Four(d) =>  print!("{},", d),
                 }
             }
             println!();
@@ -123,7 +122,7 @@ impl DataFrame {
         let mut year_data = DataFrame::new(2020-1750, self.col_labels.len());
         year_data.col_labels = self.col_labels.clone();
         if (year < 1750 || year > 2020) {
-            return Err(Box::new(MyError("Country does not exist".to_string())))
+            return Err(Box::new(MyError("Year is not within proper range".to_string())))
         }
         let mut n = 0;
         for row in &self.columns {
