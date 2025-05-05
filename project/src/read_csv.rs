@@ -4,8 +4,8 @@ use std::process;
 use std::io;
 use csv;
 
-#[derive(Debug, Clone, PartialEq)]
-enum ColumnVal {
+#[derive(Debug, Clone, PartialEq, PartialOrd)]
+pub enum ColumnVal {
     One(String),
     Two(bool),
     Three(f64),
@@ -14,14 +14,14 @@ enum ColumnVal {
 
 #[derive(Debug, Clone)]
 pub struct DataFrame {
-    columns: Vec<Vec<ColumnVal>>,
+    pub columns: Vec<Vec<ColumnVal>>,
     rows: usize,
-    col_labels: Vec<String>,
+    pub col_labels: Vec<String>,
 }
 
 // For returning errors
 #[derive(Debug)]
-struct MyError(String);
+pub struct MyError(pub String);
 
 impl fmt::Display for MyError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
