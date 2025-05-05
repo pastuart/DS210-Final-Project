@@ -4,7 +4,7 @@ use std::process;
 use std::io;
 use csv;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 enum ColumnVal {
     One(String),
     Two(bool),
@@ -83,7 +83,6 @@ impl DataFrame {
         for label in &self.col_labels {
             print!("{:<2?}    ", label);
         }
-        println!();
         let mut i = 0;
         for row in &self.columns {
             for val in &self.columns[i] {
@@ -99,5 +98,40 @@ impl DataFrame {
         }
         println!()
         // print the data
+    }
+
+    pub fn get_country_data(&self, country: &str) -> Result<DataFrame, Box<dyn Error>> {
+        let mut country_data = DataFrame::new(2020-1750, self.col_labels.len());
+        country_data.col_labels = self.col_labels.clone();
+        let mut country_exists = false;
+        let mut n = 0;
+        for row in &self.columns {
+            if n != 0 && &ColumnVal::One(country.to_string()) == &self.columns[n][0] {
+                country_exists = true;
+                country_data.columns.push(row.clone());
+            }
+            n = n + 1;
+        }
+        if country_exists {
+            return Ok(country_data)
+        } else {
+            return Err(Box::new(MyError("Country does not exist".to_string())))
+        }
+    }
+
+    pub fn get_year_data(&self, year: i64) -> Result<DataFrame, Box<dyn Error>> {
+        let mut year_data = DataFrame::new(2020-1750, self.col_labels.len());
+        year_data.col_labels = self.col_labels.clone();
+        if (year < 1750 || year > 2020) {
+            return Err(Box::new(MyError("Country does not exist".to_string())))
+        }
+        let mut n = 0;
+        for row in &self.columns {
+            if n != 0 && &ColumnVal::Four(year) == &self.columns[n][3] {
+                year_data.columns.push(row.clone());
+            }
+            n = n + 1;
+        }
+        return Ok(year_data)
     }
 }
